@@ -1,39 +1,33 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createChart } from 'lightweight-charts';
-import io from 'socket.io-client';
-
-const socket = io('http://localhost:4000'); // Connect to backend
 
 const CandleChart = () => {
-  const chartContainerRef = useRef();
-  const [candleSeries, setCandleSeries] = useState(null);
+  const chartContainerRef = useRef(null);
 
   useEffect(() => {
     const chart = createChart(chartContainerRef.current, {
-      width: chartContainerRef.current.clientWidth,
+      width: 600,
       height: 400,
-      layout: { backgroundColor: '#fff', textColor: '#000' },
-      grid: { vertLines: { color: '#eee' }, horzLines: { color: '#eee' } },
+      layout: {
+        background: { color: '#ffffff' },
+        textColor: '#000',
+      },
+      grid: {
+        vertLines: { color: '#eee' },
+        horzLines: { color: '#eee' },
+      },
     });
 
-    const series = chart.addCandlestickSeries();
-    setCandleSeries(series);
+    const candleSeries = chart.addCandlestickSeries();
+
+    candleSeries.setData([
+      { time: '2024-04-08', open: 100, high: 110, low: 90, close: 105 },
+      { time: '2024-04-09', open: 106, high: 115, low: 102, close: 110 },
+      { time: '2024-04-10', open: 108, high: 120, low: 100, close: 107 },
+    ]);
 
     return () => chart.remove();
   }, []);
-
-  useEffect(() => {
-    if (!candleSeries) return;
-
-    socket.on('candlestick', (data) => {
-      console.log('📥 Received:', data);
-      candleSeries.update(data);
-    });
-
-    return () => {
-      socket.off('candlestick');
-    };
-  }, [candleSeries]);
 
   return <div ref={chartContainerRef} />;
 };
