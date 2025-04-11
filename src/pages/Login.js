@@ -1,46 +1,72 @@
-// src/Login.js
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
-  const [id, setId] = useState('9016388002');
-  const [password, setPassword] = useState('1234');
+const Login = () => {
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (id === '9016388002' && password === '1234') {
-      window.location.href = '/dashboard';
+    if (userId === '9016388002' && password === '1234') {
+      navigate('/dashboard');
     } else {
       alert('Invalid credentials');
     }
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center">
-      <div className="bg-[#121212] p-8 rounded-xl w-full max-w-sm shadow-lg">
-        <h2 className="text-2xl font-semibold mb-6 text-center">2PC Login</h2>
-
-        <label className="block mb-2 text-sm text-gray-400">User ID</label>
-        <input
-          type="text"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-          className="w-full px-4 py-2 mb-4 bg-[#1e1e1e] text-white border border-gray-700 rounded-md focus:outline-none"
-        />
-
-        <label className="block mb-2 text-sm text-gray-400">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 mb-6 bg-[#1e1e1e] text-white border border-gray-700 rounded-md focus:outline-none"
-        />
-
-        <button
-          onClick={handleLogin}
-          className="w-full py-2 bg-green-400 hover:bg-green-500 text-black font-semibold rounded-md"
-        >
-          Login
-        </button>
-      </div>
+    <div style={styles.container}>
+      <h2 style={styles.title}>Login</h2>
+      <input
+        type="text"
+        placeholder="User ID"
+        value={userId}
+        onChange={(e) => setUserId(e.target.value)}
+        style={styles.input}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        style={styles.input}
+      />
+      <button onClick={handleLogin} style={styles.button}>Login</button>
     </div>
   );
-}
+};
+
+const styles = {
+  container: {
+    backgroundColor: '#111',
+    color: '#0f0',
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    marginBottom: '20px',
+    fontSize: '24px',
+  },
+  input: {
+    padding: '10px',
+    marginBottom: '10px',
+    width: '250px',
+    backgroundColor: '#222',
+    border: '1px solid #333',
+    color: '#fff',
+    borderRadius: '4px',
+  },
+  button: {
+    padding: '10px 20px',
+    backgroundColor: '#0f0',
+    color: '#000',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  }
+};
+
+export default Login;
