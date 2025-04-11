@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 const Dashboard = () => {
-  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const ws = new WebSocket('wss://twopc-ui-backend.onrender.com');
@@ -12,7 +12,7 @@ const Dashboard = () => {
 
     ws.onmessage = (event) => {
       console.log('📩 Message received:', event.data);
-      setMessage(event.data);
+      setMessages(prev => [...prev, event.data]);
     };
 
     ws.onerror = (error) => {
@@ -20,7 +20,7 @@ const Dashboard = () => {
     };
 
     ws.onclose = () => {
-      console.log('🔌 WebSocket connection closed');
+      console.log('🔌 WebSocket closed');
     };
 
     return () => {
@@ -29,21 +29,18 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div style={{
-      backgroundColor: '#000',
-      color: '#0f0',
-      minHeight: '100vh',
-      padding: '2rem',
-      fontFamily: 'monospace'
-    }}>
+    <div style={{ color: 'lime', padding: '2rem', background: '#000', minHeight: '100vh' }}>
       <h2>📊 Welcome to Dashboard</h2>
       <p>Live charts will be shown here soon...</p>
 
-      {message && (
-        <div style={{ marginTop: '2rem', padding: '1rem', border: '1px solid #0f0' }}>
-          <strong>Live Message:</strong> {message}
-        </div>
-      )}
+      <div style={{ marginTop: '2rem' }}>
+        <h4>📨 WebSocket Messages:</h4>
+        <ul>
+          {messages.map((msg, idx) => (
+            <li key={idx} style={{ fontFamily: 'monospace' }}>{msg}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
