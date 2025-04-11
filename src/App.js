@@ -1,5 +1,5 @@
 import React from 'react';
-import CandleChart from './components/CandleChart'; // ✅ Make sure spelling and case matches
+import CandleChart from './components/CandleChart';
 
 function App() {
   return (
