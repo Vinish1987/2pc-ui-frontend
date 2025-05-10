@@ -1,14 +1,16 @@
-import React from 'react';
-import CandleChart from './components/CandleChart';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 
 function App() {
   return (
-    <div>
-      <h2>Candlestick Chart</h2>
-      <CandleChart />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
   );
 }
 
 export default App;
-// redeploy trigger
